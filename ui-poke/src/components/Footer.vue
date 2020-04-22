@@ -1,8 +1,7 @@
 <template>
-<div>
-
+<div class='footer'>
   <footer>
-    <p>@AkshajBalaji</p>
+    <p>@AkshajBalaji - 2020</p>
   </footer>
 </div>
 </template>
@@ -17,5 +16,10 @@ export default {
 </script>
 
 <style scoped>
-
+  .footer {
+    position: relative;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 </style>

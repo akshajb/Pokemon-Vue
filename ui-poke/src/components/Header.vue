@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>Pokemon</h1>
-  </div>
+  <header>
+    <h1>Pokémon</h1>
+  </header>
 </template>
 
 <script>
@@ -14,5 +14,10 @@ export default {
 </script>
 
 <style scoped>
-
+  header{
+    padding: 2rem;
+  }
+  h1{
+    font-size: 5rem;
+  }
 </style>
