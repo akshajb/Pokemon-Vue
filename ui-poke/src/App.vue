@@ -64,7 +64,7 @@ export default {
         console.log(error)
       })
       .finally(function(){
-        console.log('pokedex call done')
+        console.log('pokedex call done') 
       })
     }
   },
