@@ -11,8 +11,8 @@
         <ul>
           <li v-for="(item,index) in pokemons" v-bind:key="index" data-aos="fade-in">
             <h4>{{item['pokemon_species'].name}}</h4>
-          <!-- <img class="vector" v-bind:src="imageSrc+item['entry_number']+'.svg'" />  -->
             <img class="sprite" v-bind:src="spriteSrc+item['pokemon_species'].name+'.gif'" />
+          <!-- <img class="vector" v-bind:src="imageSrc+item['entry_number']+'.svg'" />  -->
           </li>
         </ul>
       </div>
@@ -24,10 +24,11 @@
 <script>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
-const axios = require('axios')
-var gen = require('color-generator');
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+const config = require('./config');
+const axios = require('axios');
+var gen = require('color-generator');
 
 export default {
   name: 'App',
@@ -44,18 +45,15 @@ export default {
       regionClick: false,
       pokedex: {},
       pokemons: [],
-      imageSrc: 'https://veekun.com/dex/media/pokemon/dream-world/',
-      style: {
-        'background-color': '#FFFFFF'
-      },
-      spriteSrc: 'https://img.pokemondb.net/sprites/black-white/anim/normal/'
+      imageSrc: `${config.imageSrc}`,
+      spriteSrc: `${config.spriteSrc}`
     }
   },
   methods: {
     selectRegion: function(region){
       console.log('Selected ',region)
       // this.regionClick = !this.regionClick;
-      axios.get(`http://localhost:8000/pokedex/${region}`)
+      axios.get(`${config.apiSrc}/pokedex/${region}`)
       .then(response=>{
         console.log(response.data)
         this.pokedex = response.data;
