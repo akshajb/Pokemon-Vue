@@ -81,7 +81,7 @@ export default {
   },
   created(){
     AOS.init();
-    axios.get('http://localhost:8000/pokedex-list')
+    axios.get(`${config.apiSrc}/pokedex-list`)
     .then(response=>{
       this.pokedexList = response.data;
     })
