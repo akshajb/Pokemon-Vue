@@ -12,6 +12,7 @@
     "axios": "^0.19.2",
     "color-generator": "^0.1.0",
     "core-js": "^3.6.4",
+    "express": "^4.17.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {

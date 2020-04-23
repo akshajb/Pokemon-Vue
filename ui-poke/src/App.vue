@@ -3,7 +3,7 @@
     <Header></Header>
     <div class="content">
       <div class="region-select">
-        <div class="box" v-on:click="selectRegion(item.name)" v-for="(item,index) in pokedexList" v-bind:key="index">
+        <div class="box" v-bind:class="{active: index === activeItem}" v-on:click="selectRegion(item.name,index)" v-for="(item,index) in pokedexList" v-bind:key="index">
           <h3>{{item.name}}</h3>
         </div>
       </div>
@@ -46,12 +46,15 @@ export default {
       pokedex: {},
       pokemons: [],
       imageSrc: `${config.imageSrc}`,
-      spriteSrc: `${config.spriteSrc}`
+      spriteSrc: `${config.spriteSrc}`,
+      activeClass: 'active',
+      defaultClass: 'default',
+      activeItem: null
     }
   },
   methods: {
-    selectRegion: function(region){
-      console.log('Selected ',region)
+    selectRegion: function(region, i){
+      this.activeItem = i;
       // this.regionClick = !this.regionClick;
       axios.get(`${config.apiSrc}/pokedex/${region}`)
       .then(response=>{
@@ -122,7 +125,7 @@ export default {
   margin: 1rem;
   cursor: pointer;
   text-transform: capitalize;
-  transition: all 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 350ms ease-in-out;
 }
 
 .pokedex ul {
@@ -137,7 +140,7 @@ export default {
   text-transform: capitalize;
   list-style: none;
   list-style-position: inside;
-  transition: all 1s;
+  transition: all 1s ease-in-out;
 }
 
 .pokedex  li h4 {
@@ -149,25 +152,19 @@ export default {
   height: 50px;
 }
 
-.box:hover {
-  background-color: #2c3e50;
-  color: white;
+.default {
+  background-color: inherit;
 }
 
-/* .pokedex li:nth-child(2n) {
+.box:hover, .active {
   background-color: #2c3e50;
   color: white;
+  transform: scale(1.1);
 }
-
-.pokedex li:nth-child(2n-1){
-  background-color: rgba(255, 255, 255, 0.74);
-  color: #2c3e50;
-} */
 
 .pokedex li:nth-child(n) {
   background-color: #2c3e50;
   color: white;
-  background-blend-mode: darken;
 }
 
 
