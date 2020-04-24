@@ -1,6 +1,8 @@
 <template>
   <header class='header'>
-    <h1>Pokémon</h1>
+    <router-link to="/">
+      <h1>Pokédex</h1>
+    </router-link>
     <div class="nav">
       <ul>
         <router-link v-for="(item,index) in navbarItems" v-bind:key="index" v-bind:to="navbarLinks[index]" exact>
@@ -19,8 +21,8 @@ export default {
   data(){
     return {
       activeItem: 0,
-      navbarItems: ['Home', 'Region', 'About'],
-      navbarLinks: ['/','/region','/about']
+      navbarItems: ['Region', 'About'],
+      navbarLinks: ['/region','/about']
     }
   },
   methods: {
@@ -68,7 +70,7 @@ export default {
     transform: scale(1.1);
   }
 
-  .router-link-active {
+  .nav .router-link-active {
     background-color: #2c3e50;
     transform: scale(1.1);
   }
