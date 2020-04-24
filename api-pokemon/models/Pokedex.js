@@ -3,7 +3,7 @@ const Pokedex = require('pokedex-promise-v2');
 var poke = new Pokedex();
 
 
-class Regions{
+class Pokedexs{
 
     static getPokedexsList(){
 
@@ -20,4 +20,4 @@ class Regions{
 }
 
 
-module.exports = Regions
+module.exports = Pokedexs
