@@ -17,8 +17,8 @@ export default {
 
 <style scoped>
   .footer {
-    position: relative;
-    bottom: 0;
+    position: fixed;
+    bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
   }
