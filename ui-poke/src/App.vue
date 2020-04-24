@@ -1,7 +1,9 @@
 <template>
   <div id="app" v-bind:style="colorCode">
     <Header></Header>
-      <router-view></router-view> 
+    <vue-page-transition name="fade-in-down">
+      <router-view/>
+    </vue-page-transition> 
     <Footer></Footer>
   </div>
 </template>
@@ -59,6 +61,7 @@ export default {
 
 a{
   text-decoration: none;
+  color: unset;
 }
 
 </style>

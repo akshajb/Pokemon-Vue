@@ -2,16 +2,19 @@
 <div class="home main">
     <div class="search">
         <div class="search-box">
-            <input type="text" v-model="search" placeholder="Search Pokémon">
-            <button class="search-submit" v-on:keydown.enter="searchPokemon()" v-on:click.prevent="searchPokemon()">Search</button>
+            <input type="text" v-model="search" placeholder="Search Pokémon" v-on:keydown.enter="searchPokemon()">
+            <button class="search-submit" v-on:click.prevent="searchPokemon()">Search</button>
         </div>
         <div class="sub-text">
             <p>Any pokemon from Kanto, Johto, Hoen and Sinnoh</p>
         </div>
     </div>
-    <div class="search-result">
+    <div class="search-result" v-if="submitted">
         <div class="pokemon">
-        {{pokemon}}
+            <p><span>Name : {{pokemon.name}}</span></p>
+            <p><span>Type : {{pokemon.type}}</span></p>
+            <p><span>Abilities : {{pokemon.abilities}}</span></p>
+            <p><span>Stats : {{pokemon.stats}}</span></p>
         </div>
         <div class="image">
             <router-link v-bind:to="'/pokemon/'+pokemon.name">
@@ -31,7 +34,8 @@ export default {
       return {
         search: "",
         pokemon: {},
-        spriteSrc: `${config.spriteSrc}`
+        spriteSrc: `${config.spriteSrc}`,
+        submitted: false
       }
   },
   methods: {
@@ -40,6 +44,7 @@ export default {
         .then(response=>{
             console.log(response.data)
             this.pokemon = response.data;
+            this.submitted = true;
         })
         .catch(error=>{
             console.log(error)
@@ -53,7 +58,9 @@ export default {
 </script>
 
 <style scoped>
-    
+.main {
+    height: 400px;
+}
 .search {
     display: flex;
     flex-direction: column;
@@ -73,6 +80,7 @@ export default {
     width: 33%;
     margin: 0 1rem;
     padding: 0.5rem;
+    transition: all 500ms ease-in-out;
 }
 .search-submit {
     font-family: 'Fira Sans', sans-serif;
@@ -99,6 +107,12 @@ export default {
     transition: all 0.5s;
 }
 
+.search-box input:focus {
+    background: #2c3e50;
+    color: #fff;
+    outline: none;
+}
+
 .search-box input:focus::placeholder {
     opacity: 0;
 }
@@ -106,5 +120,21 @@ export default {
 .sub-text{
     text-align: center;
     font-size: 0.8rem
+}
+
+.search-result {
+    display: flex;
+    height: 50%;
+    align-items: center;
+    /* border: 1px solid red; */
+    justify-content: space-evenly;
+}
+
+.pokemon {
+    width: 50%;
+}
+
+.image img {
+    width: 80px;
 }
 </style>
