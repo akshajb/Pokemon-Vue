@@ -23,7 +23,9 @@ const axios = require('axios');
 const config = require('../config');
 
 export default {
-
+  props: {
+    
+  },
   data(){
     return {
       name: this.$route.params.name,

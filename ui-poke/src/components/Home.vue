@@ -2,14 +2,25 @@
 <div class="home main">
     <div class="search">
         <div class="search-box">
-            <input type="text" v-model="search" placeholder="Search Pokémon" v-on:keydown.enter="searchPokemon()">
-            <button class="search-submit" v-on:click.prevent="searchPokemon()">Search</button>
+            <div>
+                <input type="text" v-model="search" placeholder="Search Pokémon"  v-on:keydown.enter="searchPokemon($event)">
+                <vue-page-transition name="fade-in-down">
+                    <div class="search-suggestions" v-if="search.length > 2 && filteredPokemon.length>0 ">
+                        <ul>
+                            <li v-for="(poke,i) in filteredPokemon" v-bind:key="i" :style="{'border-color':textColor}" v-on:click.prevent="searchPokemon(poke['pokemon_species'].name)">
+                                {{poke['pokemon_species'].name}}
+                            </li>
+                        </ul>
+                    </div>
+                </vue-page-transition>
+            </div>
+            <button class="search-submit">Search</button>
         </div>
-        <div class="sub-text">
+        <!-- <div class="sub-text">
             <p>Any pokemon from Kanto, Johto, Hoen and Sinnoh</p>
-        </div>
+        </div> -->
     </div>
-    <div class="search-result" v-if="submitted">
+    <div class="search-result" v-if="retrieved=='searched'">
         <div class="image">
             <img class="sprite" v-bind:src="spriteSrc+pokemon.name+'.gif'" />
         </div>
@@ -23,6 +34,9 @@
             </router-link>
         </div>
     </div>
+    <div class="loading" v-if="retrieved=='searching'">
+      <font-awesome-icon v-bind:icon="['fas','spinner']" size="10x" pulse />
+    </div>
 </div>
 </template>
 
@@ -30,31 +44,52 @@
 const axios = require('axios');
 const config = require('../config');
 
-export default {    
-  data() {
-      return {
-        search: "",
-        pokemon: {},
-        spriteSrc: `${config.spriteSrc}`,
-        submitted: false
-      }
+export default { 
+    props: {
+        pokedexs: {
+            type: Array
+        }
+    },
+    mounted(){
+        this.textColor = document.getElementById('app').style.backgroundColor
+    },
+    data() {
+        return {
+            search: "",
+            pokemon: {},
+            spriteSrc: `${config.spriteSrc}`,
+            retrieved: 'noSearch',
+            textColor: ''
+        }
+    },
+    methods: {
+        searchPokemon: function(value){
+            this.search = ''
+            this.retrieved='searching'
+            axios.get(`${config.apiSrc}/pokemon/${value}`)
+            .then(response=>{
+                console.log(response.data)
+                this.pokemon = response.data;
+                this.retrieved = 'searched';
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+            .finally(function(){
+                console.log('pokedex call done') 
+            })
+        }
   },
-  methods: {
-    searchPokemon: function(){
-        axios.get(`${config.apiSrc}/pokemon/${this.search}`)
-        .then(response=>{
-            console.log(response.data)
-            this.pokemon = response.data;
-            this.submitted = true;
-        })
-        .catch(error=>{
-            console.log(error)
-        })
-        .finally(function(){
-            console.log('pokedex call done') 
-        })
+    computed: {
+        filteredPokemon : function() {
+            var allPokemons = [];
+            this.pokedexs.forEach(pokedex => {
+                allPokemons = allPokemons.concat(pokedex.pokemons);
+            })
+            const result = allPokemons.filter(pokemon => pokemon['pokemon_species'].name.match(this.search))
+            return result
+        }
     }
-  }
 }
 </script>
 
@@ -70,19 +105,21 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 6rem;
+    align-items: center;
 }
 .search-box {
     display: flex;  
-    justify-content: center;
+    justify-content: flex-end;
     margin-top: 1rem;
+    align-self: stretch;
+    height: 0px;
 }
 .search-box input[type="text"] {
     position: relative;
     font-size: 1rem;
     border: solid 1px #2c3e50;
     background-color: transparent;
-    width: 33%;
+    /* width: 33%; */
     margin: 0 1rem;
     padding: 0.5rem;
     transition: all 500ms ease-in-out;
@@ -97,6 +134,8 @@ export default {
     padding: 0.5rem;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    width: max-content;
+    height: fit-content;
 }
 
 .search-submit:hover {
@@ -124,6 +163,28 @@ export default {
 .sub-text{
     text-align: center;
     font-size: 0.8rem
+}
+
+.search-suggestions {
+    justify-content: center;
+    padding: 1rem;
+    height: 200px;
+    overflow: auto;
+}
+
+.search-suggestions li {
+    list-style-type: none;
+    text-transform: capitalize;
+    border: 0.5px solid  rgba(49, 49, 49, 0.15);
+    padding: 0.5rem;
+    background-color: #2c3e50 ;
+    color: #fff;
+    cursor: pointer;
+}
+
+.loading {
+    align-self: center;
+    margin: 2rem;
 }
 
 .search-result {
