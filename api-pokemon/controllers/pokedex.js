@@ -26,3 +26,27 @@ exports.getpokedexbyname = (req,res) => {
         res.send(error)
     })
 }
+
+exports.getallpokedex = (req,res) => {
+    const response = Pokedex.getPokedexsList()
+    var response2;
+    var data = [];
+    response.then(response =>{
+        for (let index = 1; index < 5; index++) {
+            response2 = Pokedex.getPokedexByName(response.results[index].name)
+            response2.then(rawdata => {
+                data.push({
+                    name: rawdata.name,
+                    pokemons: rawdata.pokemon_entries
+                })
+                if(index===4){
+                    res.send(data)
+                }
+            })
+        }
+    }).catch(error =>{
+        res.send(error)
+    })
+
+    
+}

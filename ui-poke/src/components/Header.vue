@@ -37,7 +37,7 @@ export default {
     max-width: 960px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 
   h1{
@@ -53,7 +53,7 @@ export default {
   .nav ul{
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: flex-end;
   }
   
   .nav li {

@@ -14,6 +14,6 @@ router.get('/pokedex/:name', pokedex_ctrl.getpokedexbyname)
 
 router.get('/pokemon/:name', pokemon_ctrl.getpokemonbyname)
 
-router.get('/', (req, res) => {res.send('Hello Trainer')})
+router.get('/' ,pokedex_ctrl.getallpokedex)
 
 module.exports = router;
