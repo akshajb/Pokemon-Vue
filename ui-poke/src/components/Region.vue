@@ -11,10 +11,7 @@
     <div class="pokedex" v-show="regionClick">
       <ul>
         <router-link v-for="(item,index) in pokemons" v-bind:key="index" v-bind:to="'/pokemon/'+item['pokemon_species'].name">
-          <li data-aos="fade-in">
-            <h4>{{item['pokemon_species'].name}}</h4>
-            <img class="sprite" v-bind:src="spriteSrc+item['pokemon_species'].name+'.gif'" />
-          </li>
+          <ListItem v-bind:item="item" v-bind:spriteSrc="spriteSrc" />
         </router-link>
       </ul>
     </div>
@@ -24,15 +21,18 @@
 <script>
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import ListItem from './subcomponents/ListItem'
 const config = require('../config');
 const axios = require('axios');
 
 
 export default {
-
+  components: {
+    'ListItem': ListItem
+  },
   data(){
     return{
-    
+
       pokedexList: [],
       regionClick: false,
       pokedex: {},
@@ -109,40 +109,5 @@ export default {
   transform: scale(1.1);
 }
 
-.pokedex ul {
-  text-align: left;
-  padding: 0.5rem;
-}
 
-.pokedex li {
-  display: flex;
-  justify-content: space-evenly;
-  padding: 0.5rem;
-  text-transform: capitalize;
-  list-style: none;
-  list-style-position: inside;
-  transition: all 1s ease-in-out;
-}
-
-.pokedex  li h4 {
-  align-self: center;
-}
-
-.pokedex .sprite  {
-  width: 50px;
-  height: 50px;
-}
-
-.default {
-  background-color: inherit;
-}
-
-.pokedex li:nth-child(n) {
-  background-color: #2c3e50;
-  color: white;
-}
-
-.pokedex li:hover {
-  transform: scale(1.1);
-}
 </style>

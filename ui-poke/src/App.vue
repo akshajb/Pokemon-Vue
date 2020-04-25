@@ -2,7 +2,7 @@
   <div id="app" v-bind:style="colorCode">
     <Header></Header>
     <vue-page-transition name="fade-in-down">
-      <router-view/>
+      <router-view />
     </vue-page-transition> 
     <Footer></Footer>
   </div>

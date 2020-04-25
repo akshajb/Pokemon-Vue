@@ -1,14 +1,19 @@
 <template>
 <vue-page-transition name="fade-in-down">
-  <div class='pokemon' v-show="loaded">
-    <div class="image">
-      <img v-bind:src="imageSrc+pokemon.id+'.svg'" v-on:load="onload()"/> 
+  <div class="container">
+    <div class='pokemon' v-show="loaded">
+      <div class="image">
+        <img ref="myImg" v-bind:src="imageSrc+pokemon.id+'.svg'" v-on:load="onload($event)"/> 
+      </div>
+      <div class="info">
+        <h1>{{pokemon.name}}</h1>
+        <p><span class="stats"><h3>Type :</h3> <ul><li v-for="(type,index) in pokemon.type" v-bind:key="index" :style="{'border-color':textColor}"> <span>{{type}}</span></li></ul></span></p>
+        <p><span class="stats"><h3>Abilities :</h3> <ul><li v-for="(ability,index) in pokemon.abilities" v-bind:key="index" :style="{'border-color':textColor}"> <span>{{ability}}</span></li></ul></span></p>
+        <p><span class="stats"><h3>Stats :</h3> <ul><li v-for="(stat,index) in pokemon.stats" v-bind:key="index" :style="{'border-color':textColor}"> <span>{{stat.name}}</span> <span>{{stat.base_stat}}</span></li></ul></span></p>
+      </div>
     </div>
-    <div class="info">
-      <p><span>Name : {{pokemon.name}}</span></p>
-      <p><span>Type : {{pokemon.type}}</span></p>
-      <p><span>Abilities : {{pokemon.abilities}}</span></p>
-      <p><span>Stats : {{pokemon.stats}}</span></p>
+    <div class="loading" v-show="!loaded">
+      <font-awesome-icon class="icon" v-bind:icon="['fas','spinner']" size="10x" pulse />
     </div>
   </div>
 </vue-page-transition> 
@@ -18,18 +23,20 @@ const axios = require('axios');
 const config = require('../config');
 
 export default {
-  
+
   data(){
     return {
       name: this.$route.params.name,
       pokemon: {},
       imageSrc: `${config.imageSrc}`,
-      loaded: false
+      loaded: false,
+      textColor: ''
     }
   },
   methods: {
     onload: function() {
       this.loaded = true;
+      this.textColor = document.getElementById('app').style.backgroundColor
     }
   },
   created(){
@@ -43,14 +50,15 @@ export default {
     })
     .finally(function(){
       console.log('pokedex call done') 
-    })
+    });
+
   }
 
 }
 </script>
 
 <style scoped>
-  .pokemon {
+  .pokemon, .loading {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -69,6 +77,40 @@ export default {
     flex-basis: 50%;
     /* background: #2c3e50; */
     color: #2c3e50;
-    font-weight: 400;
+    font-weight: 700;
+    align-self: flex-start;
   }
+
+  .info h1 {
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  .info p {
+    margin: 1rem
+  }
+
+  .info li {
+    display:flex;
+    justify-content: space-between;
+    list-style-type: none;
+    width: 200px;
+    text-transform: capitalize;
+    border: 0.5px solid  rgba(49, 49, 49, 0.15);
+    padding: 0.5rem;
+    background-color: #2c3e50 ;
+    color: #fff;
+  }
+  .stats {
+    
+  }
+  .loading {
+    box-shadow: none;
+  }
+
+  .type,.abilities,.stats {
+    display: flex;
+    justify-content: space-between;
+  }
+
 </style>

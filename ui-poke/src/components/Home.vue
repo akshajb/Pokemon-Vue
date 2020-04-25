@@ -10,15 +10,16 @@
         </div>
     </div>
     <div class="search-result" v-if="submitted">
-        <div class="pokemon">
-            <p><span>Name : {{pokemon.name}}</span></p>
-            <p><span>Type : {{pokemon.type}}</span></p>
-            <p><span>Abilities : {{pokemon.abilities}}</span></p>
-            <p><span>Stats : {{pokemon.stats}}</span></p>
-        </div>
         <div class="image">
+            <img class="sprite" v-bind:src="spriteSrc+pokemon.name+'.gif'" />
+        </div>
+        <div class="info">
+            <p><span class="stats"><h3>Name :</h3> <ul><li><span>{{pokemon.name}}</span></li></ul></span></p>
+            <p><span class="stats"><h3>Type :</h3> <ul><li v-for="(type,index) in pokemon.type" v-bind:key="index"><span>{{type}}</span></li></ul></span></p>
+        </div>
+        <div class="more">
             <router-link v-bind:to="'/pokemon/'+pokemon.name">
-                <img v-bind:src="spriteSrc+pokemon.name+'.gif'" /> 
+                <font-awesome-icon class="icon" v-bind:icon="['fas','plus-circle']" size="2x" />
             </router-link>
         </div>
     </div>
@@ -29,7 +30,7 @@
 const axios = require('axios');
 const config = require('../config');
 
-export default {
+export default {    
   data() {
       return {
         search: "",
@@ -61,6 +62,10 @@ export default {
 .main {
     height: 400px;
 }
+.home {
+    display: flex;
+    flex-direction: column;
+}
 .search {
     display: flex;
     flex-direction: column;
@@ -84,8 +89,8 @@ export default {
 }
 .search-submit {
     font-family: 'Fira Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 0.9rem;
+    font-weight: 600;
     color: #fff;
     background: #2c3e50;
     border: none;
@@ -96,7 +101,6 @@ export default {
 
 .search-submit:hover {
     transform: scale(1.1)
-
 }
 
 .search-box input::placeholder {
@@ -126,15 +130,46 @@ export default {
     display: flex;
     height: 50%;
     align-items: center;
-    /* border: 1px solid red; */
+    color: #2c3e50;
     justify-content: space-evenly;
-}
-
-.pokemon {
     width: 50%;
+    margin: auto;
+    box-shadow: rgba(49, 49, 49, 0.15) 20px 30px 50px;
+}
+.info p {
+    margin: 1rem
 }
 
 .image img {
     width: 80px;
+}
+.stats {
+    display:flex;
+    justify-content: space-between;
+}
+.stats h3 {
+    align-self: center;
+}
+.stats ul {
+    width: 70%;
+}
+.info li {
+    list-style-type: none;
+    width: 200px;
+    text-transform: capitalize;
+    border: 0.5px solid  rgba(49, 49, 49, 0.15);
+    padding: 0.5rem;
+    background-color: #2c3e50 ;
+    color: #fff;
+}
+
+.icon {
+    opacity: 0.5;
+    transition: all 0.3s ease-in-out
+}
+
+.icon:hover {
+    opacity: 1;
+    transform: scale(1.1)
 }
 </style>
