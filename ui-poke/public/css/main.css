@@ -8,5 +8,14 @@
 
 body {
     font-family: 'Fira Sans', sans-serif;
+    font-size: small;
 }
 
+
+@media only screen and (min-width: 760px )  {
+    
+    body {
+        font-size: medium;
+    }    
+
+}

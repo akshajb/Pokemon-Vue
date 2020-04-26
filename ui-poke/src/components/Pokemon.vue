@@ -62,25 +62,25 @@ export default {
 <style scoped>
   .pokemon, .loading {
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     max-width: 960px;
-    margin: 2rem auto;
+    margin: 0;
     padding: 2rem;
     box-shadow: rgba(49, 49, 49, 0.15) 20px 30px 50px;
   }
 
   .image img {
     max-height: 90%;
-    width: 280px;
+    width: 180px;
   }
 
   .info {
     flex-basis: 50%;
-    /* background: #2c3e50; */
     color: #2c3e50;
     font-weight: 700;
-    align-self: flex-start;
+    align-self: center;
   }
 
   .info h1 {
@@ -103,16 +103,41 @@ export default {
     background-color: #2c3e50 ;
     color: #fff;
   }
-  .stats {
-    
-  }
   .loading {
     box-shadow: none;
   }
 
-  .type,.abilities,.stats {
+.stats {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
   }
 
+
+ @media only screen and (min-width: 760px )  {
+    
+    .pokemon {
+      flex-direction: row;
+      margin: 2rem auto;
+      flex-direction: row;
+      font-size: 1rem;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+
+    .info {
+      align-self: flex-start;
+    }
+
+    .image img {
+      max-height: 90%;
+      width: 280px;
+    }
+
+  }
 </style>

@@ -1,10 +1,10 @@
 <template>
-<div class="home main">
+<div class="home main" @click="closeSidebar()">
     <div class="search">
         <div class="search-box">
             <div>
                 <input type="text" v-model="search" placeholder="Search Pokémon"  v-on:keydown.enter="searchPokemon($event)">
-                <vue-page-transition name="fade-in-down">
+                <vue-page-transition name="fade-in-up">
                     <div class="search-suggestions" v-if="search.length > 2 && filteredPokemon.length>0 ">
                         <ul>
                             <li v-for="(poke,i) in filteredPokemon" v-bind:key="i" :style="{'border-color':textColor}" v-on:click.prevent="searchPokemon(poke['pokemon_species'].name)">
@@ -14,7 +14,9 @@
                     </div>
                 </vue-page-transition>
             </div>
-            <button class="search-submit">Search</button>
+            <button class="search-submit">
+                <font-awesome-icon v-bind:icon="['fas','search']" size="1x" />
+            </button>
         </div>
         <!-- <div class="sub-text">
             <p>Any pokemon from Kanto, Johto, Hoen and Sinnoh</p>
@@ -43,6 +45,7 @@
 <script>
 const axios = require('axios');
 const config = require('../config');
+import { bus } from '../main'
 
 export default { 
     props: {
@@ -78,6 +81,9 @@ export default {
             .finally(function(){
                 console.log('pokedex call done') 
             })
+        },
+        closeSidebar: function(){
+            bus.$emit('closeSidebar');
         }
   },
     computed: {
@@ -95,11 +101,14 @@ export default {
 
 <style scoped>
 .main {
-    height: 400px;
+    height: 500px;
 }
 .home {
     display: flex;
     flex-direction: column;
+    padding: 1rem;
+    align-items: center;
+    justify-content: space-between;
 }
 .search {
     display: flex;
@@ -126,7 +135,7 @@ export default {
 }
 .search-submit {
     font-family: 'Fira Sans', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #fff;
     background: #2c3e50;
@@ -189,11 +198,12 @@ export default {
 
 .search-result {
     display: flex;
-    height: 50%;
+    flex-direction: column;
+    height: 60%;
     align-items: center;
     color: #2c3e50;
-    justify-content: space-evenly;
-    width: 50%;
+    justify-content: center;
+    width: 100%;
     margin: auto;
     box-shadow: rgba(49, 49, 49, 0.15) 20px 30px 50px;
 }
@@ -233,4 +243,30 @@ export default {
     opacity: 1;
     transform: scale(1.1)
 }
+
+
+
+
+
+
+
+ @media only screen and (min-width: 760px )  {
+    
+    .main {
+        height: 400px;
+    }
+
+    .home {
+        align-items: flex-end;
+        justify-content: stretch;
+    }
+
+    .search-result {
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 50%;
+        height: 50%;
+    }
+  }
+
 </style>

@@ -31,6 +31,9 @@ export default {
       textColor: ''
     }
   },
+  methods: {
+    
+  },
   computed: {
     colorCode : function(){
       var color = gen().hexString();
