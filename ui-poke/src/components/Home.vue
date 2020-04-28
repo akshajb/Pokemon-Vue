@@ -45,7 +45,6 @@
 <script>
 const axios = require('axios');
 const config = require('../config');
-import { bus } from '../main'
 
 export default { 
     props: {
@@ -83,7 +82,9 @@ export default {
             })
         },
         closeSidebar: function(){
-            bus.$emit('closeSidebar');
+            if(this.$store.state.sideBar){
+                this.$store.commit('hidesidebar')
+            }
         }
   },
     computed: {

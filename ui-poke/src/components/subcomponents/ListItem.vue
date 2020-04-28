@@ -8,12 +8,12 @@
 export default {
     name: 'ListItem',
     props: {
-        item: {
-            type: Object
-        },
-        spriteSrc: {
-            type: String
-        }
+      item: {
+        type: Object
+      },
+      spriteSrc: {
+        type: String  
+      }
     }
 }
 </script>  
@@ -32,6 +32,8 @@ li {
   list-style: none;
   list-style-position: inside;
   transition: all 1s ease-in-out;
+  width: 80%;
+  margin: 0 auto;
 }
 
 li h4 {
@@ -53,6 +55,6 @@ li:nth-child(n) {
 }
 
 li:hover {
-  transform: scale(1.1);
+  transform: scale(1.04) !important;
 }
 </style>

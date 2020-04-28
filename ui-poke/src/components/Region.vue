@@ -11,7 +11,7 @@
     <div class="pokedex" v-show="regionClick">
       <ul>
         <router-link v-for="(item,index) in pokemons" v-bind:key="index" v-bind:to="'/pokemon/'+item['pokemon_species'].name">
-          <ListItem v-bind:item="item" v-bind:spriteSrc="spriteSrc" />
+          <ListItem v-bind:item="item" v-bind:spriteSrc="spriteSrc" :style="{'border': `1px solid ${$store.state.bgcolor}`}" />
         </router-link>
       </ul>
     </div>
@@ -23,7 +23,6 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import ListItem from './subcomponents/ListItem'
 const config = require('../config');
-const axios = require('axios');
 
 
 export default {
@@ -35,7 +34,7 @@ export default {
 
       pokedexList: [],
       regionClick: false,
-      pokedex: {},
+      selectedPokedex: {},
       pokemons: [],
       spriteSrc: `${config.spriteSrc}`,
       activeClass: 'active',
@@ -47,16 +46,7 @@ export default {
 
   created(){
     AOS.init();
-    axios.get(`${config.apiSrc}/pokedex-list`)
-    .then(response=>{
-      this.pokedexList = response.data;
-    })
-    .catch(error=>{
-      console.log(error)
-    })
-    .finally(function(){
-      console.log('pokedex-list call done')
-    })
+    this.pokedexList = this.$store.state.pokedexs;
   },
 
   methods: {
@@ -64,22 +54,15 @@ export default {
       this.activeItem = i;
     },
     selectRegion: function(region){
-      axios.get(`${config.apiSrc}/pokedex/${region}`)
-      .then(response=>{
-        console.log(response.data)
-        this.pokedex = response.data;
-        this.regionClick = true;
-        this.pokemons = this.pokedex['pokemons'].slice(0,20)
-      })
-      .catch(error=>{
-        console.log(error)
-      })
-      .finally(function(){
-        console.log('pokedex call done') 
+      this.regionClick = true;
+      this.pokedexList.forEach(Pokedex=>{
+        if(Pokedex.name == region){
+          this.selectedPokedex = Pokedex;
+          this.pokemons = this.selectedPokedex['pokemons'].slice(0,20) 
+        }
       })
     }
   }
-
 }
 </script>
 

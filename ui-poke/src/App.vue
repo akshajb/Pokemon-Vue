@@ -2,7 +2,7 @@
   <div id="app" v-bind:style="colorCode">
     <Header></Header>
     <vue-page-transition name="fade-in-down">
-      <router-view :pokedexs="pokedexs" :textColor="textColor" />
+      <router-view  :textColor="textColor" />
     </vue-page-transition> 
     <Footer></Footer>
   </div>
@@ -11,8 +11,8 @@
 <script>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
-const axios = require('axios');
-const config = require('./config');
+// const axios = require('axios');
+// const config = require('./config');
 
 var gen = require('color-generator');
 
@@ -27,8 +27,7 @@ export default {
   },
   data() {
     return {
-      pokedexs: [],
-      textColor: ''
+      textColor: ""
     }
   },
   methods: {
@@ -36,28 +35,19 @@ export default {
   },
   computed: {
     colorCode : function(){
-      var color = gen().hexString();
-      var sat = gen(0.8, 0.25).hexString()
-      console.log(sat)
       return{
-        'background-color': color,
-        'border': `1px solid ${color}`,
+        'background-color': this.textColor,
+        'border': `1px solid ${this.textColor}`
       }
     }
   },
   created() {
-    axios.get(`${config.apiSrc}/`)
-    .then(response=>{
-      console.log(response.data)
-      this.pokedexs = response.data;  
-    })
-    .catch(error=>{
-      console.log(error)
-    })
-    .finally(function(){
-      console.log('all pokedex call done') 
-    })
-    this.textColor = document.getElementById('app').style.backgroundColor
+    var color = gen().hexString();
+    this.$store.dispatch('setpokedexs')
+    this.$store.dispatch('setbackground', color)
+  },
+  mounted() {
+    this.textColor = this.$store.state.bgcolor
   }
 }
 </script>

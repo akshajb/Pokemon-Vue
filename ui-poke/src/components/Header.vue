@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { bus } from '../main'
 
 export default {
   props: {
@@ -39,11 +38,6 @@ export default {
   },
   created(){
     
-    const vue = this;
-
-    bus.$on('closeSidebar',function(){
-      vue.sidebar = false;
-    })
 
   },
   data(){
@@ -51,21 +45,24 @@ export default {
       activeItem: 0,
       navbarItems: ['Region', 'About'],
       navbarLinks: ['/region','/about'],
-      sidebar: false
     }
   },
   methods: {
     showSidebar(){
-      this.sidebar = true
-      console.log('clicked')
+      
+      this.$store.commit('showsidebar')
+
     },
     hideSidebar(){
-      this.sidebar = false
+      
+      this.$store.commit('hidesidebar')
+
     }
   },
   computed: {
     sideBarVisible: function() {
-      if(this.sidebar){
+
+      if(this.$store.state.sideBar){
         return{
           'left': '0'
         }
